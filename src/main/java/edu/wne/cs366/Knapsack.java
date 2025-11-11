@@ -250,7 +250,6 @@ public class Knapsack {
             totalSize += sizes[itemIndex];
         }
         System.out.println("Total size = " + totalSize);
-        System.out.println("Wasted space = " + (k - totalSize));
 
         stdin.close();
     }
