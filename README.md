@@ -185,7 +185,7 @@ You are provided with:
 ## Submission Process
 
 ```bash
-tar -czf pa5-YOURNAME.zip /workspace/assignments/pa5
+tar -czf pa5-YOURNAME.zip /workspace
 ```
 
 Download the file from the container and upload to Kodiak.
