@@ -70,15 +70,29 @@ public class Knapsack {
         //    - Set exist[i][j] and belong[i][j] accordingly
         // 4. Follow the pseudocode from the class handout closely
 
-        // Base case
+        // Base case: can make 0 with 0 items
         exist[0][0] = true;
         for (int j = 1; j <= k; j++) {
             exist[0][j] = false;
         }
 
-        // Fill the DP table
-        // YOUR CODE HERE
+        // Fill the DP table bottom-up
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j <= k; j++) {
+                exist[i][j] = false;
 
+                // Option 1: Don't use item i-1
+                if (exist[i-1][j]) {
+                    exist[i][j] = true;
+                    belong[i][j] = false;
+                }
+                // Option 2: Use item i-1 (if it fits and we can make the remaining capacity)
+                else if (j - sizes[i-1] >= 0 && exist[i-1][j - sizes[i-1]]) {
+                    exist[i][j] = true;
+                    belong[i][j] = true;
+                }
+            }
+        }
     }
 
     /**
@@ -111,19 +125,33 @@ public class Knapsack {
         //      - Move to row-1
         // 3. Return the list of selected items
 
-        // Find the optimal capacity achieved
+        // Find the maximum achievable capacity
         int col = k;
         while (col > 0 && !exist[n][col]) {
             col--;
         }
 
-        // If no solution exists
         if (col == 0) {
-            return solution;
+            return solution; // No items fit
         }
 
-        // Traceback to find which items are in the solution
-        // YOUR CODE HERE
+        // Traceback to find which items are selected
+        int row = n;
+        while (col > 0 && row > 0) {
+            // Move up until we find an item that belongs
+            while (row > 0 && !belong[row][col]) {
+                row--;
+            }
+
+            if (row > 0) {
+                // Item row-1 is in the solution
+                solution.add(row - 1);
+                // Subtract this item's size
+                col -= sizes[row - 1];
+                // Move to previous row
+                row--;
+            }
+        }
 
         return solution;
     }
